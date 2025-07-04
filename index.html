@@ -9,264 +9,597 @@
     <style>
         :root {
             --rojo-suave: #E9584D;
-            --casi-negro: #3A3935;
+            --rojo-hover: #d64439;
+            --casi-negro: #1C1C1E;
             --negro: #000000;
+            --gris-oscuro: #2C2C2E;
+            --gris-medio: #3A3A3C;
+            --gris-claro: #48484A;
+            --blanco-suave: #F2F2F7;
+            --borde-sutil: rgba(255, 255, 255, 0.12);
+            --sombra-principal: 0 20px 40px rgba(0, 0, 0, 0.3);
+            --sombra-boton: 0 8px 24px rgba(233, 88, 77, 0.3);
+        }
+        
+        * {
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+            box-sizing: border-box;
+        }
+        
+        input, textarea, select {
+            -webkit-user-select: text;
+            user-select: text;
         }
         
         body {
-            background-color: var(--negro);
-            color: white;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, var(--negro) 0%, var(--casi-negro) 100%);
+            color: var(--blanco-suave);
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
         
         .container-custom {
-            background-color: var(--casi-negro);
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(233, 88, 77, 0.1);
+            background: rgba(28, 28, 30, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--borde-sutil);
+            border-radius: 28px;
+            box-shadow: var(--sombra-principal);
+            margin: 16px;
+            padding: 32px 24px;
+            max-width: 420px;
+            width: calc(100% - 32px);
         }
         
-        .btn-primary {
-            background-color: var(--rojo-suave);
-            border: none;
-            transition: all 0.3s ease;
+        .header-title {
+            font-size: 32px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, var(--blanco-suave) 0%, rgba(242, 242, 247, 0.8) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
         
-        .btn-primary:hover {
-            background-color: #d64439;
-            transform: translateY(-2px);
+        .header-subtitle {
+            font-size: 17px;
+            font-weight: 400;
+            color: rgba(242, 242, 247, 0.6);
+            line-height: 1.4;
+            margin-bottom: 32px;
+        }
+        
+        .form-group {
+            margin-bottom: 28px;
+        }
+        
+        .form-label {
+            display: block;
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--blanco-suave);
+            margin-bottom: 12px;
+            letter-spacing: -0.2px;
         }
         
         .form-input {
-            background-color: rgba(255, 255, 255, 0.1);
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            color: white;
-            border-radius: 10px;
-            transition: all 0.3s ease;
+            width: 100%;
+            background: var(--gris-oscuro);
+            border: 2px solid var(--gris-medio);
+            border-radius: 14px;
+            padding: 16px;
+            font-size: 17px;
+            color: var(--blanco-suave);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            -webkit-appearance: none;
+            appearance: none;
         }
         
         .form-input:focus {
-            border-color: var(--rojo-suave);
-            box-shadow: 0 0 0 3px rgba(233, 88, 77, 0.1);
             outline: none;
+            border-color: var(--rojo-suave);
+            box-shadow: 0 0 0 4px rgba(233, 88, 77, 0.15);
+            transform: translateY(-2px);
         }
         
-        .checkbox-custom {
+        .form-input::placeholder {
+            color: rgba(242, 242, 247, 0.4);
+        }
+        
+        .btn-primary {
+            width: 100%;
+            background: linear-gradient(135deg, var(--rojo-suave) 0%, var(--rojo-hover) 100%);
+            border: none;
+            border-radius: 16px;
+            padding: 20px 24px;
+            font-size: 18px;
+            font-weight: 600;
+            color: white;
+            letter-spacing: -0.2px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: var(--sombra-boton);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 32px;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 32px rgba(233, 88, 77, 0.4);
+        }
+        
+        .btn-primary:active {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(233, 88, 77, 0.3);
+        }
+        
+        .btn-secondary {
+            width: 100%;
+            background: var(--gris-oscuro);
+            border: 2px solid var(--gris-medio);
+            border-radius: 16px;
+            padding: 18px 24px;
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--blanco-suave);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .btn-secondary:hover {
+            background: var(--gris-medio);
+            transform: translateY(-2px);
+        }
+        
+        .energy-slider {
+            width: 100%;
+            height: 6px;
+            background: var(--gris-medio);
+            border-radius: 3px;
+            outline: none;
+            -webkit-appearance: none;
+            appearance: none;
+            margin: 16px 0;
+        }
+        
+        .energy-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 28px;
+            height: 28px;
+            background: var(--rojo-suave);
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(233, 88, 77, 0.4);
+            transition: all 0.2s ease;
+        }
+        
+        .energy-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 16px rgba(233, 88, 77, 0.5);
+        }
+        
+        .energy-display {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 8px;
+            font-size: 14px;
+            color: rgba(242, 242, 247, 0.6);
+        }
+        
+        .energy-value {
+            background: var(--rojo-suave);
+            color: white;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 16px;
+            min-width: 40px;
+            text-align: center;
+        }
+        
+        .radio-group {
+            display: grid;
+            gap: 12px;
+            margin-top: 12px;
+        }
+        
+        .radio-option {
+            background: var(--gris-oscuro);
+            border: 2px solid var(--gris-medio);
+            border-radius: 14px;
+            padding: 18px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            min-height: 56px;
+        }
+        
+        .radio-option:hover {
+            background: var(--gris-medio);
+            transform: translateY(-1px);
+        }
+        
+        .radio-option.selected {
+            border-color: var(--rojo-suave);
+            background: rgba(233, 88, 77, 0.1);
+            box-shadow: 0 0 0 1px rgba(233, 88, 77, 0.2);
+        }
+        
+        .radio-option input[type="radio"] {
+            width: 22px;
+            height: 22px;
             accent-color: var(--rojo-suave);
+            margin: 0;
+        }
+        
+        .radio-option label {
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--blanco-suave);
+            cursor: pointer;
+            flex: 1;
+            margin: 0;
+        }
+        
+        .select-wrapper {
+            position: relative;
+        }
+        
+        .select-wrapper::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            right: 16px;
+            transform: translateY(-50%);
+            width: 0;
+            height: 0;
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            border-top: 6px solid rgba(242, 242, 247, 0.6);
+            pointer-events: none;
         }
         
         .photo-container {
-            border-radius: 15px;
+            border-radius: 20px;
             overflow: hidden;
-            box-shadow: 0 15px 35px rgba(233, 88, 77, 0.2);
+            box-shadow: 0 20px 40px rgba(233, 88, 77, 0.2);
+            margin-bottom: 24px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
         }
         
-        .fade-in {
-            animation: fadeIn 0.8s ease-in;
+        .photo-container img {
+            width: 100%;
+            height: auto;
+            display: block;
         }
         
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        .reward-message {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--blanco-suave);
+            text-align: center;
+            margin-bottom: 24px;
+            letter-spacing: -0.3px;
         }
         
-        .loading {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(255, 255, 255, 0.3);
+        .love-message {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--rojo-suave);
+            text-align: center;
+            margin-bottom: 32px;
+            letter-spacing: -0.4px;
+        }
+        
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        
+        .loading-content {
+            background: var(--gris-oscuro);
+            border-radius: 20px;
+            padding: 32px;
+            text-align: center;
+            border: 1px solid var(--borde-sutil);
+        }
+        
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid var(--gris-medio);
+            border-top: 4px solid var(--rojo-suave);
             border-radius: 50%;
-            border-top-color: var(--rojo-suave);
-            animation: spin 1s ease-in-out infinite;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 16px;
         }
         
         @keyframes spin {
-            to { transform: rotate(360deg); }
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
         
-        .error-message {
-            background-color: rgba(220, 53, 69, 0.1);
-            border: 1px solid rgba(220, 53, 69, 0.3);
-            color: #dc3545;
-            border-radius: 10px;
+        .loading-text {
+            font-size: 17px;
+            font-weight: 500;
+            color: var(--blanco-suave);
         }
         
-        .success-message {
-            background-color: rgba(40, 167, 69, 0.1);
-            border: 1px solid rgba(40, 167, 69, 0.3);
-            color: #28a745;
-            border-radius: 10px;
+        .fade-in {
+            animation: fadeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1);
         }
         
-        @media (max-width: 640px) {
+        @keyframes fadeIn {
+            from { 
+                opacity: 0; 
+                transform: translateY(20px);
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0);
+            }
+        }
+        
+        .status-message {
+            margin-top: 16px;
+            padding: 16px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 500;
+            text-align: center;
+        }
+        
+        .status-message.error {
+            background: rgba(255, 59, 48, 0.1);
+            border: 2px solid rgba(255, 59, 48, 0.3);
+            color: #FF3B30;
+        }
+        
+        .status-message.success {
+            background: rgba(52, 199, 89, 0.1);
+            border: 2px solid rgba(52, 199, 89, 0.3);
+            color: #34C759;
+        }
+        
+        .icon {
+            font-size: 20px;
+            margin-right: 8px;
+        }
+        
+        .hidden {
+            display: none !important;
+        }
+        
+        /* Responsive para pantallas pequeñas */
+        @media (max-width: 375px) {
             .container-custom {
-                margin: 10px;
-                padding: 20px;
+                margin: 8px;
+                padding: 24px 16px;
+                border-radius: 20px;
+            }
+            
+            .header-title {
+                font-size: 28px;
+            }
+            
+            .form-input {
+                padding: 14px;
+                font-size: 16px;
+            }
+            
+            .btn-primary {
+                padding: 18px 20px;
+                font-size: 17px;
+            }
+            
+            .radio-option {
+                padding: 16px;
+                min-height: 52px;
+            }
+        }
+        
+        /* Pantallas grandes */
+        @media (min-width: 768px) {
+            .container-custom {
+                margin: 32px auto;
+                max-width: 440px;
+            }
+        }
+        
+        /* Accesibilidad */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
             }
         }
     </style>
 </head>
-<body class="min-h-screen flex items-center justify-center p-4">
-    <div class="container-custom w-full max-w-md mx-auto p-8">
-        <!-- Página Principal -->
-        <div id="main-page" class="fade-in">
-            <div class="text-center mb-8">
-                <h1 class="text-2xl font-bold text-white mb-4">
-                    <i class="fas fa-heart text-red-400 mr-2"></i>
-                    Bitácora Diaria
-                </h1>
-                <p class="text-gray-300 text-lg leading-relaxed">
-                    Maxito, tu bienestar es lo más importante. Te tomará sólo 1 minuto.
-                </p>
+<body>
+    <div class="min-h-screen flex items-center justify-center">
+        <div class="container-custom">
+            <!-- Página Principal -->
+            <div id="main-page" class="fade-in">
+                <div class="text-center mb-8">
+                    <h1 class="header-title">
+                        <i class="fas fa-heart icon" style="color: var(--rojo-suave);"></i>
+                        Bitácora Diaria
+                    </h1>
+                    <p class="header-subtitle">
+                        Maxito, tu bienestar es lo más importante. Te tomará sólo 1 minuto.
+                    </p>
+                </div>
+
+                <form id="bitacora-form">
+                    <!-- Horas de Sueño -->
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-moon icon"></i>
+                            ¿Cuántas horas dormiste anoche?
+                        </label>
+                        <input 
+                            type="number" 
+                            id="horas_sueno" 
+                            name="horas_sueno" 
+                            min="0" 
+                            max="24" 
+                            class="form-input"
+                            placeholder="Ej: 7"
+                            required
+                        >
+                    </div>
+
+                    <!-- Nivel de Energía -->
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-battery-half icon"></i>
+                            Nivel de Energía
+                        </label>
+                        <input 
+                            type="range" 
+                            id="nivel_energia" 
+                            name="nivel_energia" 
+                            min="1" 
+                            max="10" 
+                            value="5"
+                            class="energy-slider"
+                        >
+                        <div class="energy-display">
+                            <span>Muy bajo</span>
+                            <div class="energy-value" id="energia-value">5</div>
+                            <span>Muy alto</span>
+                        </div>
+                    </div>
+
+                    <!-- Cambios de Ánimo -->
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-chart-line icon"></i>
+                            Cambios de Ánimo
+                        </label>
+                        <div class="radio-group">
+                            <div class="radio-option" data-value="Muy estable">
+                                <input type="radio" name="cambios_animo" value="Muy estable" id="animo1">
+                                <label for="animo1">Muy estable</label>
+                            </div>
+                            <div class="radio-option" data-value="Cambios leves">
+                                <input type="radio" name="cambios_animo" value="Cambios leves" id="animo2">
+                                <label for="animo2">Cambios leves</label>
+                            </div>
+                            <div class="radio-option" data-value="Cambios moderados">
+                                <input type="radio" name="cambios_animo" value="Cambios moderados" id="animo3">
+                                <label for="animo3">Cambios moderados</label>
+                            </div>
+                            <div class="radio-option" data-value="Muy inestable">
+                                <input type="radio" name="cambios_animo" value="Muy inestable" id="animo4">
+                                <label for="animo4">Muy inestable</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Emoción Predominante -->
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-smile icon"></i>
+                            Emoción Predominante
+                        </label>
+                        <div class="select-wrapper">
+                            <select id="emocion_predominante" name="emocion_predominante" class="form-input" required>
+                                <option value="">Selecciona una emoción</option>
+                                <option value="Tristeza">Tristeza</option>
+                                <option value="Desánimo/Bajones">Desánimo/Bajones</option>
+                                <option value="Irritabilidad">Irritabilidad</option>
+                                <option value="Euforia">Euforia</option>
+                                <option value="Ansiedad">Ansiedad</option>
+                                <option value="Vacío">Vacío</option>
+                                <option value="Estabilidad">Estabilidad</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Reflexión -->
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-pen icon"></i>
+                            Evento Relevante / Reflexión
+                        </label>
+                        <textarea 
+                            id="evento_reflexion" 
+                            name="evento_reflexion" 
+                            rows="4" 
+                            class="form-input"
+                            placeholder="¿Pasó algo significativo hoy o cómo te sientes?"
+                            style="resize: none;"
+                        ></textarea>
+                    </div>
+
+                    <!-- Botón Enviar -->
+                    <button type="submit" class="btn-primary" id="submit-btn">
+                        <i class="fas fa-paper-plane"></i>
+                        Completar Bitácora
+                    </button>
+                </form>
+
+                <!-- Mensaje de estado -->
+                <div id="status-message" class="status-message hidden"></div>
             </div>
 
-            <form id="bitacora-form" class="space-y-6">
-                <!-- Horas de Sueño -->
-                <div>
-                    <label class="block text-gray-300 text-sm font-medium mb-2">
-                        <i class="fas fa-moon mr-2"></i>
-                        ¿Cuántas horas dormiste anoche?
-                    </label>
-                    <input 
-                        type="number" 
-                        id="horas_sueno" 
-                        name="horas_sueno" 
-                        min="0" 
-                        max="24" 
-                        class="form-input w-full p-3 text-lg"
-                        placeholder="Ej: 7"
-                        required
-                    >
-                </div>
-
-                <!-- Nivel de Energía -->
-                <div>
-                    <label class="block text-gray-300 text-sm font-medium mb-2">
-                        <i class="fas fa-battery-half mr-2"></i>
-                        Nivel de Energía (1-10)
-                    </label>
-                    <input 
-                        type="range" 
-                        id="nivel_energia" 
-                        name="nivel_energia" 
-                        min="1" 
-                        max="10" 
-                        value="5"
-                        class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer"
-                        style="accent-color: var(--rojo-suave);"
-                    >
-                    <div class="flex justify-between text-xs text-gray-400 mt-1">
-                        <span>Muy bajo</span>
-                        <span id="energia-value">5</span>
-                        <span>Muy alto</span>
-                    </div>
-                </div>
-
-                <!-- Cambios de Ánimo -->
-                <div>
-                    <label class="block text-gray-300 text-sm font-medium mb-3">
-                        <i class="fas fa-chart-line mr-2"></i>
-                        Cambios de Ánimo
-                    </label>
-                    <div class="space-y-2">
-                        <label class="flex items-center">
-                            <input type="radio" name="cambios_animo" value="Muy estable" class="checkbox-custom mr-3">
-                            <span class="text-gray-300">Muy estable</span>
-                        </label>
-                        <label class="flex items-center">
-                            <input type="radio" name="cambios_animo" value="Cambios leves" class="checkbox-custom mr-3">
-                            <span class="text-gray-300">Cambios leves</span>
-                        </label>
-                        <label class="flex items-center">
-                            <input type="radio" name="cambios_animo" value="Cambios moderados" class="checkbox-custom mr-3">
-                            <span class="text-gray-300">Cambios moderados</span>
-                        </label>
-                        <label class="flex items-center">
-                            <input type="radio" name="cambios_animo" value="Muy inestable" class="checkbox-custom mr-3">
-                            <span class="text-gray-300">Muy inestable</span>
-                        </label>
-                    </div>
-                </div>
-
-                <!-- Emoción Predominante -->
-                <div>
-                    <label class="block text-gray-300 text-sm font-medium mb-3">
-                        <i class="fas fa-smile mr-2"></i>
-                        Emoción Predominante
-                    </label>
-                    <select id="emocion_predominante" name="emocion_predominante" class="form-input w-full p-3" required>
-                        <option value="">Selecciona una emoción</option>
-                        <option value="Tristeza">Tristeza</option>
-                        <option value="Desánimo/Bajones">Desánimo/Bajones</option>
-                        <option value="Irritabilidad">Irritabilidad</option>
-                        <option value="Euforia">Euforia</option>
-                        <option value="Ansiedad">Ansiedad</option>
-                        <option value="Vacío">Vacío</option>
-                        <option value="Estabilidad">Estabilidad</option>
-                    </select>
-                </div>
-
-                <!-- Reflexión -->
-                <div>
-                    <label class="block text-gray-300 text-sm font-medium mb-2">
-                        <i class="fas fa-pen mr-2"></i>
-                        Evento Relevante / Reflexión
-                    </label>
-                    <textarea 
-                        id="evento_reflexion" 
-                        name="evento_reflexion" 
-                        rows="3" 
-                        class="form-input w-full p-3 resize-none"
-                        placeholder="¿Pasó algo significativo hoy o cómo te sientes?"
-                    ></textarea>
-                </div>
-
-                <!-- Botón Enviar -->
-                <button 
-                    type="submit" 
-                    class="btn-primary w-full py-4 px-6 text-white text-lg font-medium rounded-lg flex items-center justify-center"
-                    id="submit-btn"
-                >
-                    <i class="fas fa-paper-plane mr-2"></i>
-                    Completar Bitácora
-                </button>
-            </form>
-
-            <!-- Mensaje de estado -->
-            <div id="status-message" class="mt-4 p-3 rounded-lg hidden"></div>
-        </div>
-
-        <!-- Página de Recompensa -->
-        <div id="reward-page" class="fade-in hidden">
-            <div class="text-center">
-                <div id="reward-message" class="text-xl font-medium text-gray-300 mb-6">
+            <!-- Página de Recompensa -->
+            <div id="reward-page" class="fade-in hidden">
+                <div class="reward-message" id="reward-message">
                     Mira qué pequeño eras...
                 </div>
                 
-                <div class="photo-container mb-6">
-                    <img id="reward-photo" src="" alt="Foto de recuerdo" class="w-full h-auto rounded-lg">
+                <div class="photo-container">
+                    <img id="reward-photo" src="" alt="Foto de recuerdo">
                 </div>
                 
-                <div class="text-2xl font-bold text-red-400 mb-6">
-                    <i class="fas fa-heart mr-2"></i>
+                <div class="love-message">
+                    <i class="fas fa-heart"></i>
                     Te amamos hijito ❤️
                 </div>
                 
-                <button 
-                    id="new-entry-btn" 
-                    class="btn-primary w-full py-3 px-6 text-white font-medium rounded-lg"
-                >
-                    <i class="fas fa-plus mr-2"></i>
+                <button id="new-entry-btn" class="btn-secondary">
+                    <i class="fas fa-plus"></i>
                     Nueva Bitácora
                 </button>
             </div>
         </div>
+    </div>
 
-        <!-- Loading -->
-        <div id="loading-overlay" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div class="bg-gray-800 p-6 rounded-lg text-center">
-                <div class="loading mb-4"></div>
-                <p class="text-gray-300">Cargando tu sorpresa...</p>
-            </div>
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="loading-overlay hidden">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <div class="loading-text">Cargando tu sorpresa...</div>
         </div>
     </div>
 
@@ -274,21 +607,11 @@
         class BitacoraMaxito {
             constructor() {
                 this.fotos = [
-                    'fotos/foto1.jpg',
-                    'fotos/foto2.jpg',
-                    'fotos/foto3.jpg',
-                    'fotos/foto4.jpg',
-                    'fotos/foto5.jpg',
-                    'fotos/foto6.jpg',
-                    'fotos/foto7.jpg',
-                    'fotos/foto8.jpg',
-                    'fotos/foto9.jpg',
-                    'fotos/foto10.jpg',
-                    'fotos/foto11.jpg',
-                    'fotos/foto12.jpg',
-                    'fotos/foto13.jpg',
-                    'fotos/foto14.jpg',
-                    'fotos/foto15.jpg'
+                    'fotos/foto1.jpg', 'fotos/foto2.jpg', 'fotos/foto3.jpg',
+                    'fotos/foto4.jpg', 'fotos/foto5.jpg', 'fotos/foto6.jpg',
+                    'fotos/foto7.jpg', 'fotos/foto8.jpg', 'fotos/foto9.jpg',
+                    'fotos/foto10.jpg', 'fotos/foto11.jpg', 'fotos/foto12.jpg',
+                    'fotos/foto13.jpg', 'fotos/foto14.jpg', 'fotos/foto15.jpg'
                 ];
                 
                 this.mensajes = [
@@ -303,13 +626,16 @@
                 ];
                 
                 this.makeWebhook = 'https://hook.us1.make.com/144onf1g776djfz608m6rl5pu7us4u37';
+                this.timeoutId = null;
                 this.init();
             }
             
             init() {
                 this.setupFormSubmission();
                 this.setupEnergySlider();
+                this.setupRadioButtons();
                 this.setupNewEntryButton();
+                this.setupTouchFeedback();
             }
             
             setupFormSubmission() {
@@ -333,6 +659,22 @@
                 }
             }
             
+            setupRadioButtons() {
+                const radioOptions = document.querySelectorAll('.radio-option');
+                
+                radioOptions.forEach(option => {
+                    option.addEventListener('click', () => {
+                        radioOptions.forEach(opt => opt.classList.remove('selected'));
+                        option.classList.add('selected');
+                        
+                        const radio = option.querySelector('input[type="radio"]');
+                        if (radio) {
+                            radio.checked = true;
+                        }
+                    });
+                });
+            }
+            
             setupNewEntryButton() {
                 const newEntryBtn = document.getElementById('new-entry-btn');
                 if (newEntryBtn) {
@@ -342,31 +684,76 @@
                 }
             }
             
-            async procesarBitacora() {
-                try {
-                    // Mostrar loading
-                    this.mostrarLoading(true);
+            setupTouchFeedback() {
+                const buttons = document.querySelectorAll('.btn-primary, .btn-secondary, .radio-option');
+                
+                buttons.forEach(button => {
+                    button.addEventListener('touchstart', () => {
+                        button.style.transform = 'scale(0.98)';
+                    });
                     
-                    // Validar formulario
+                    button.addEventListener('touchend', () => {
+                        setTimeout(() => {
+                            button.style.transform = '';
+                        }, 100);
+                    });
+                });
+            }
+            
+            async procesarBitacora() {
+                console.log('Iniciando procesamiento de bitácora...');
+                
+                // Limpiar timeout anterior si existe
+                if (this.timeoutId) {
+                    clearTimeout(this.timeoutId);
+                }
+                
+                try {
+                    // Validar formulario primero
                     if (!this.validarFormulario()) {
-                        this.mostrarLoading(false);
+                        console.log('Formulario no válido');
                         return;
                     }
                     
-                    // Recoger y enviar datos
-                    const formData = this.recogerDatos();
-                    await this.enviarDatos(formData);
+                    // Mostrar loading
+                    this.mostrarLoading(true);
+                    console.log('Loading mostrado');
                     
-                    // Mostrar sorpresa
-                    setTimeout(() => {
+                    // Recoger datos
+                    const formData = this.recogerDatos();
+                    console.log('Datos recolectados:', formData);
+                    
+                    // Enviar datos en paralelo con timeout
+                    const envioPromise = this.enviarDatos(formData);
+                    
+                    // Garantizar que después de 3 segundos máximo se muestre la sorpresa
+                    this.timeoutId = setTimeout(() => {
+                        console.log('Timeout ejecutado, mostrando sorpresa...');
                         this.mostrarLoading(false);
                         this.mostrarSorpresa();
-                    }, 2000);
+                    }, 3000);
+                    
+                    // Intentar enviar datos pero no bloquear el flujo
+                    try {
+                        await Promise.race([
+                            envioPromise,
+                            new Promise((_, reject) => 
+                                setTimeout(() => reject(new Error('Timeout')), 2500)
+                            )
+                        ]);
+                        console.log('Datos enviados correctamente');
+                    } catch (error) {
+                        console.log('Error o timeout en envío:', error.message);
+                        // No interrumpir el flujo, continuar con la sorpresa
+                    }
                     
                 } catch (error) {
-                    console.error('Error procesando bitácora:', error);
-                    this.mostrarLoading(false);
-                    this.mostrarMensaje('Error al procesar la bitácora. Inténtalo de nuevo.', 'error');
+                    console.error('Error general procesando bitácora:', error);
+                    // Asegurar que siempre se muestre la sorpresa
+                    this.timeoutId = setTimeout(() => {
+                        this.mostrarLoading(false);
+                        this.mostrarSorpresa();
+                    }, 1000);
                 }
             }
             
@@ -411,60 +798,84 @@
                 try {
                     const response = await fetch(this.makeWebhook, {
                         method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(datos)
+                        headers: { 
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        },
+                        body: JSON.stringify(datos),
+                        mode: 'cors'
                     });
                     
-                    if (!response.ok) {
-                        throw new Error('Error en el envío');
-                    }
-                    
-                    console.log('Datos enviados correctamente');
+                    console.log('Respuesta del webhook:', response.status);
+                    return response;
                 } catch (error) {
                     console.log('Error enviando datos:', error);
-                    // No mostramos error al usuario para no interrumpir la experiencia
+                    throw error;
                 }
             }
             
             mostrarSorpresa() {
+                console.log('Mostrando sorpresa...');
+                
+                // Limpiar timeout si existe
+                if (this.timeoutId) {
+                    clearTimeout(this.timeoutId);
+                    this.timeoutId = null;
+                }
+                
                 const fotoAleatoria = this.fotos[Math.floor(Math.random() * this.fotos.length)];
                 const mensajeAleatorio = this.mensajes[Math.floor(Math.random() * this.mensajes.length)];
                 
+                // Ocultar loading
+                this.mostrarLoading(false);
+                
+                // Cambiar páginas
                 document.getElementById('main-page').classList.add('hidden');
                 document.getElementById('reward-page').classList.remove('hidden');
                 document.getElementById('reward-message').textContent = mensajeAleatorio;
                 document.getElementById('reward-photo').src = fotoAleatoria;
+                
+                console.log('Sorpresa mostrada correctamente');
             }
             
             reiniciarFormulario() {
-                // Limpiar formulario
+                // Limpiar timeout si existe
+                if (this.timeoutId) {
+                    clearTimeout(this.timeoutId);
+                    this.timeoutId = null;
+                }
+                
                 document.getElementById('bitacora-form').reset();
                 document.getElementById('energia-value').textContent = '5';
                 
-                // Volver a la página principal
+                document.querySelectorAll('.radio-option').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                
                 document.getElementById('reward-page').classList.add('hidden');
                 document.getElementById('main-page').classList.remove('hidden');
                 
-                // Limpiar mensajes
                 this.ocultarMensaje();
+                this.mostrarLoading(false);
             }
             
             mostrarLoading(mostrar) {
                 const loadingOverlay = document.getElementById('loading-overlay');
                 if (mostrar) {
                     loadingOverlay.classList.remove('hidden');
+                    console.log('Loading overlay mostrado');
                 } else {
                     loadingOverlay.classList.add('hidden');
+                    console.log('Loading overlay ocultado');
                 }
             }
             
             mostrarMensaje(mensaje, tipo) {
                 const statusMessage = document.getElementById('status-message');
                 statusMessage.textContent = mensaje;
-                statusMessage.className = `mt-4 p-3 rounded-lg ${tipo === 'error' ? 'error-message' : 'success-message'}`;
+                statusMessage.className = `status-message ${tipo}`;
                 statusMessage.classList.remove('hidden');
                 
-                // Ocultar mensaje después de 5 segundos
                 setTimeout(() => {
                     this.ocultarMensaje();
                 }, 5000);
@@ -476,8 +887,8 @@
             }
         }
 
-        // Inicializar cuando cargue la página
         document.addEventListener('DOMContentLoaded', () => {
+            console.log('DOM cargado, inicializando BitacoraMaxito...');
             new BitacoraMaxito();
         });
     </script>
