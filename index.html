@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bitácora Diaria - Maxito</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --rojo-suave: #E9584D;
+            --casi-negro: #3A3935;
+            --negro: #000000;
+        }
+        
+        body {
+            background-color: var(--negro);
+            color: white;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        
+        .container-custom {
+            background-color: var(--casi-negro);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(233, 88, 77, 0.1);
+        }
+        
+        .btn-primary {
+            background-color: var(--rojo-suave);
+            border: none;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            background-color: #d64439;
+            transform: translateY(-2px);
+        }
+        
+        .form-input {
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .form-input:focus {
+            border-color: var(--rojo-suave);
+            box-shadow: 0 0 0 3px rgba(233, 88, 77, 0.1);
+            outline: none;
+        }
+        
+        .checkbox-custom {
+            accent-color: var(--rojo-suave);
+        }
+        
+        .photo-container {
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(233, 88, 77, 0.2);
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.8s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--rojo-suave);
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .error-message {
+            background-color: rgba(220, 53, 69, 0.1);
+            border: 1px solid rgba(220, 53, 69, 0.3);
+            color: #dc3545;
+            border-radius: 10px;
+        }
+        
+        .success-message {
+            background-color: rgba(40, 167, 69, 0.1);
+            border: 1px solid rgba(40, 167, 69, 0.3);
+            color: #28a745;
+            border-radius: 10px;
+        }
+        
+        @media (max-width: 640px) {
+            .container-custom {
+                margin: 10px;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4">
+    <div class="container-custom w-full max-w-md mx-auto p-8">
+        <!-- Página Principal -->
+        <div id="main-page" class="fade-in">
+            <div class="text-center mb-8">
+                <h1 class="text-2xl font-bold text-white mb-4">
+                    <i class="fas fa-heart text-red-400 mr-2"></i>
+                    Bitácora Diaria
+                </h1>
+                <p class="text-gray-300 text-lg leading-relaxed">
+                    Maxito, tu bienestar es lo más importante. Te tomará sólo 1 minuto.
+                </p>
+            </div>
+
+            <form id="bitacora-form" class="space-y-6">
+                <!-- Horas de Sueño -->
+                <div>
+                    <label class="block text-gray-300 text-sm font-medium mb-2">
+                        <i class="fas fa-moon mr-2"></i>
+                        ¿Cuántas horas dormiste anoche?
+                    </label>
+                    <input 
+                        type="number" 
+                        id="horas_sueno" 
+                        name="horas_sueno" 
+                        min="0" 
+                        max="24" 
+                        class="form-input w-full p-3 text-lg"
+                        placeholder="Ej: 7"
+                        required
+                    >
+                </div>
+
+                <!-- Nivel de Energía -->
+                <div>
+                    <label class="block text-gray-300 text-sm font-medium mb-2">
+                        <i class="fas fa-battery-half mr-2"></i>
+                        Nivel de Energía (1-10)
+                    </label>
+                    <input 
+                        type="range" 
+                        id="nivel_energia" 
+                        name="nivel_energia" 
+                        min="1" 
+                        max="10" 
+                        value="5"
+                        class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer"
+                        style="accent-color: var(--rojo-suave);"
+                    >
+                    <div class="flex justify-between text-xs text-gray-400 mt-1">
+                        <span>Muy bajo</span>
+                        <span id="energia-value">5</span>
+                        <span>Muy alto</span>
+                    </div>
+                </div>
+
+                <!-- Cambios de Ánimo -->
+                <div>
+                    <label class="block text-gray-300 text-sm font-medium mb-3">
+                        <i class="fas fa-chart-line mr-2"></i>
+                        Cambios de Ánimo
+                    </label>
+                    <div class="space-y-2">
+                        <label class="flex items-center">
+                            <input type="radio" name="cambios_animo" value="Muy estable" class="checkbox-custom mr-3">
+                            <span class="text-gray-300">Muy estable</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="radio" name="cambios_animo" value="Cambios leves" class="checkbox-custom mr-3">
+                            <span class="text-gray-300">Cambios leves</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="radio" name="cambios_animo" value="Cambios moderados" class="checkbox-custom mr-3">
+                            <span class="text-gray-300">Cambios moderados</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="radio" name="cambios_animo" value="Muy inestable" class="checkbox-custom mr-3">
+                            <span class="text-gray-300">Muy inestable</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Emoción Predominante -->
+                <div>
+                    <label class="block text-gray-300 text-sm font-medium mb-3">
+                        <i class="fas fa-smile mr-2"></i>
+                        Emoción Predominante
+                    </label>
+                    <select id="emocion_predominante" name="emocion_predominante" class="form-input w-full p-3" required>
+                        <option value="">Selecciona una emoción</option>
+                        <option value="Tristeza">Tristeza</option>
+                        <option value="Desánimo/Bajones">Desánimo/Bajones</option>
+                        <option value="Irritabilidad">Irritabilidad</option>
+                        <option value="Euforia">Euforia</option>
+                        <option value="Ansiedad">Ansiedad</option>
+                        <option value="Vacío">Vacío</option>
+                        <option value="Estabilidad">Estabilidad</option>
+                    </select>
+                </div>
+
+                <!-- Reflexión -->
+                <div>
+                    <label class="block text-gray-300 text-sm font-medium mb-2">
+                        <i class="fas fa-pen mr-2"></i>
+                        Evento Relevante / Reflexión
+                    </label>
+                    <textarea 
+                        id="evento_reflexion" 
+                        name="evento_reflexion" 
+                        rows="3" 
+                        class="form-input w-full p-3 resize-none"
+                        placeholder="¿Pasó algo significativo hoy o cómo te sientes?"
+                    ></textarea>
+                </div>
+
+                <!-- Botón Enviar -->
+                <button 
+                    type="submit" 
+                    class="btn-primary w-full py-4 px-6 text-white text-lg font-medium rounded-lg flex items-center justify-center"
+                    id="submit-btn"
+                >
+                    <i class="fas fa-paper-plane mr-2"></i>
+                    Completar Bitácora
+                </button>
+            </form>
+
+            <!-- Mensaje de estado -->
+            <div id="status-message" class="mt-4 p-3 rounded-lg hidden"></div>
+        </div>
+
+        <!-- Página de Recompensa -->
+        <div id="reward-page" class="fade-in hidden">
+            <div class="text-center">
+                <div id="reward-message" class="text-xl font-medium text-gray-300 mb-6">
+                    Mira qué pequeño eras...
+                </div>
+                
+                <div class="photo-container mb-6">
+                    <img id="reward-photo" src="" alt="Foto de recuerdo" class="w-full h-auto rounded-lg">
+                </div>
+                
+                <div class="text-2xl font-bold text-red-400 mb-6">
+                    <i class="fas fa-heart mr-2"></i>
+                    Te amamos hijito ❤️
+                </div>
+                
+                <button 
+                    id="new-entry-btn" 
+                    class="btn-primary w-full py-3 px-6 text-white font-medium rounded-lg"
+                >
+                    <i class="fas fa-plus mr-2"></i>
+                    Nueva Bitácora
+                </button>
+            </div>
+        </div>
+
+        <!-- Loading -->
+        <div id="loading-overlay" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div class="bg-gray-800 p-6 rounded-lg text-center">
+                <div class="loading mb-4"></div>
+                <p class="text-gray-300">Cargando tu sorpresa...</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // app.js - Script para cargar fotos desde servidor local
+class BitacoraMaxito {
+    constructor() {
+        this.fotos = [
+            'fotos/foto1.jpg',
+            'fotos/foto2.jpg',
+            'fotos/foto3.jpg',
+            'fotos/foto4.jpg',
+            'fotos/foto5.jpg',
+            'fotos/foto6.jpg',
+            'fotos/foto7.jpg',
+            'fotos/foto8.jpg',
+            'fotos/foto9.jpg',
+            'fotos/foto10.jpg',
+            'fotos/foto11.jpg',
+            'fotos/foto12.jpg',
+            'fotos/foto13.jpg',
+            'fotos/foto14.jpg',
+            'fotos/foto15.jpg'
+        ];
+        
+        this.mensajes = [
+            "Mira qué pequeño eras...",
+            "¿Te acuerdas de este momento?",
+            "Qué hermoso recuerdo...",
+            "Esta sonrisa sigue ahí...",
+            "Momentos que no se olvidan...",
+            "Siempre fuiste especial...",
+            "Mira cuánto has crecido...",
+            "¿Recuerdas esta aventura?"
+        ];
+        
+        this.makeWebhook = 'https://hook.us1.make.com/144onf1g776djfz608m6rl5pu7us4u37';
+        this.init();
+    }
+    
+    init() {
+        this.setupFormSubmission();
+    }
+    
+    setupFormSubmission() {
+        const form = document.getElementById('bitacora-form');
+        if (form) {
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                this.procesarBitacora();
+            });
+        }
+    }
+    
+    procesarBitacora() {
+        const formData = this.recogerDatos();
+        this.enviarDatos(formData);
+        this.mostrarSorpresa();
+    }
+    
+    recogerDatos() {
+        return {
+            fecha: new Date().toISOString().split('T')[0],
+            horas_sueno: document.getElementById('horas-sueno').value,
+            nivel_energia: document.getElementById('nivel-energia').value,
+            cambios_animo: document.querySelector('input[name="cambios-animo"]:checked').value,
+            emocion_predominante: document.querySelector('input[name="emocion"]:checked').value,
+            evento_reflexion: document.getElementById('evento-reflexion').value,
+            timestamp: new Date().toISOString()
+        };
+    }
+    
+    async enviarDatos(datos) {
+        try {
+            await fetch(this.makeWebhook, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(datos)
+            });
+        } catch (error) {
+            console.log('Error enviando datos:', error);
+        }
+    }
+    
+    mostrarSorpresa() {
+        const fotoAleatoria = this.fotos[Math.floor(Math.random() * this.fotos.length)];
+        const mensajeAleatorio = this.mensajes[Math.floor(Math.random() * this.mensajes.length)];
+        
+        document.getElementById('formulario-container').style.display = 'none';
+        document.getElementById('sorpresa-container').style.display = 'block';
+        document.getElementById('mensaje-rotativo').textContent = mensajeAleatorio;
+        document.getElementById('foto-sorpresa').src = fotoAleatoria;
+    }
+}
+
+// Inicializar cuando cargue la página
+document.addEventListener('DOMContentLoaded', () => {
+    new BitacoraMaxito();
+});
+
+    </script>
+    </body>
+</html>
