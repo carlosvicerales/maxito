@@ -271,102 +271,215 @@
     </div>
 
     <script>
-        // app.js - Script para cargar fotos desde servidor local
-class BitacoraMaxito {
-    constructor() {
-        this.fotos = [
-            'fotos/foto1.jpg',
-            'fotos/foto2.jpg',
-            'fotos/foto3.jpg',
-            'fotos/foto4.jpg',
-            'fotos/foto5.jpg',
-            'fotos/foto6.jpg',
-            'fotos/foto7.jpg',
-            'fotos/foto8.jpg',
-            'fotos/foto9.jpg',
-            'fotos/foto10.jpg',
-            'fotos/foto11.jpg',
-            'fotos/foto12.jpg',
-            'fotos/foto13.jpg',
-            'fotos/foto14.jpg',
-            'fotos/foto15.jpg'
-        ];
-        
-        this.mensajes = [
-            "Mira qué pequeño eras...",
-            "¿Te acuerdas de este momento?",
-            "Qué hermoso recuerdo...",
-            "Esta sonrisa sigue ahí...",
-            "Momentos que no se olvidan...",
-            "Siempre fuiste especial...",
-            "Mira cuánto has crecido...",
-            "¿Recuerdas esta aventura?"
-        ];
-        
-        this.makeWebhook = 'https://hook.us1.make.com/144onf1g776djfz608m6rl5pu7us4u37';
-        this.init();
-    }
-    
-    init() {
-        this.setupFormSubmission();
-    }
-    
-    setupFormSubmission() {
-        const form = document.getElementById('bitacora-form');
-        if (form) {
-            form.addEventListener('submit', (e) => {
-                e.preventDefault();
-                this.procesarBitacora();
-            });
+        class BitacoraMaxito {
+            constructor() {
+                this.fotos = [
+                    'fotos/foto1.jpg',
+                    'fotos/foto2.jpg',
+                    'fotos/foto3.jpg',
+                    'fotos/foto4.jpg',
+                    'fotos/foto5.jpg',
+                    'fotos/foto6.jpg',
+                    'fotos/foto7.jpg',
+                    'fotos/foto8.jpg',
+                    'fotos/foto9.jpg',
+                    'fotos/foto10.jpg',
+                    'fotos/foto11.jpg',
+                    'fotos/foto12.jpg',
+                    'fotos/foto13.jpg',
+                    'fotos/foto14.jpg',
+                    'fotos/foto15.jpg'
+                ];
+                
+                this.mensajes = [
+                    "Mira qué pequeño eras...",
+                    "¿Te acuerdas de este momento?",
+                    "Qué hermoso recuerdo...",
+                    "Esta sonrisa sigue ahí...",
+                    "Momentos que no se olvidan...",
+                    "Siempre fuiste especial...",
+                    "Mira cuánto has crecido...",
+                    "¿Recuerdas esta aventura?"
+                ];
+                
+                this.makeWebhook = 'https://hook.us1.make.com/144onf1g776djfz608m6rl5pu7us4u37';
+                this.init();
+            }
+            
+            init() {
+                this.setupFormSubmission();
+                this.setupEnergySlider();
+                this.setupNewEntryButton();
+            }
+            
+            setupFormSubmission() {
+                const form = document.getElementById('bitacora-form');
+                if (form) {
+                    form.addEventListener('submit', (e) => {
+                        e.preventDefault();
+                        this.procesarBitacora();
+                    });
+                }
+            }
+            
+            setupEnergySlider() {
+                const slider = document.getElementById('nivel_energia');
+                const valueDisplay = document.getElementById('energia-value');
+                
+                if (slider && valueDisplay) {
+                    slider.addEventListener('input', (e) => {
+                        valueDisplay.textContent = e.target.value;
+                    });
+                }
+            }
+            
+            setupNewEntryButton() {
+                const newEntryBtn = document.getElementById('new-entry-btn');
+                if (newEntryBtn) {
+                    newEntryBtn.addEventListener('click', () => {
+                        this.reiniciarFormulario();
+                    });
+                }
+            }
+            
+            async procesarBitacora() {
+                try {
+                    // Mostrar loading
+                    this.mostrarLoading(true);
+                    
+                    // Validar formulario
+                    if (!this.validarFormulario()) {
+                        this.mostrarLoading(false);
+                        return;
+                    }
+                    
+                    // Recoger y enviar datos
+                    const formData = this.recogerDatos();
+                    await this.enviarDatos(formData);
+                    
+                    // Mostrar sorpresa
+                    setTimeout(() => {
+                        this.mostrarLoading(false);
+                        this.mostrarSorpresa();
+                    }, 2000);
+                    
+                } catch (error) {
+                    console.error('Error procesando bitácora:', error);
+                    this.mostrarLoading(false);
+                    this.mostrarMensaje('Error al procesar la bitácora. Inténtalo de nuevo.', 'error');
+                }
+            }
+            
+            validarFormulario() {
+                const horasSueno = document.getElementById('horas_sueno').value;
+                const cambiosAnimo = document.querySelector('input[name="cambios_animo"]:checked');
+                const emocionPredominante = document.getElementById('emocion_predominante').value;
+                
+                if (!horasSueno) {
+                    this.mostrarMensaje('Por favor, ingresa las horas de sueño.', 'error');
+                    return false;
+                }
+                
+                if (!cambiosAnimo) {
+                    this.mostrarMensaje('Por favor, selecciona los cambios de ánimo.', 'error');
+                    return false;
+                }
+                
+                if (!emocionPredominante) {
+                    this.mostrarMensaje('Por favor, selecciona la emoción predominante.', 'error');
+                    return false;
+                }
+                
+                return true;
+            }
+            
+            recogerDatos() {
+                const cambiosAnimo = document.querySelector('input[name="cambios_animo"]:checked');
+                
+                return {
+                    fecha: new Date().toISOString().split('T')[0],
+                    horas_sueno: document.getElementById('horas_sueno').value,
+                    nivel_energia: document.getElementById('nivel_energia').value,
+                    cambios_animo: cambiosAnimo ? cambiosAnimo.value : '',
+                    emocion_predominante: document.getElementById('emocion_predominante').value,
+                    evento_reflexion: document.getElementById('evento_reflexion').value,
+                    timestamp: new Date().toISOString()
+                };
+            }
+            
+            async enviarDatos(datos) {
+                try {
+                    const response = await fetch(this.makeWebhook, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(datos)
+                    });
+                    
+                    if (!response.ok) {
+                        throw new Error('Error en el envío');
+                    }
+                    
+                    console.log('Datos enviados correctamente');
+                } catch (error) {
+                    console.log('Error enviando datos:', error);
+                    // No mostramos error al usuario para no interrumpir la experiencia
+                }
+            }
+            
+            mostrarSorpresa() {
+                const fotoAleatoria = this.fotos[Math.floor(Math.random() * this.fotos.length)];
+                const mensajeAleatorio = this.mensajes[Math.floor(Math.random() * this.mensajes.length)];
+                
+                document.getElementById('main-page').classList.add('hidden');
+                document.getElementById('reward-page').classList.remove('hidden');
+                document.getElementById('reward-message').textContent = mensajeAleatorio;
+                document.getElementById('reward-photo').src = fotoAleatoria;
+            }
+            
+            reiniciarFormulario() {
+                // Limpiar formulario
+                document.getElementById('bitacora-form').reset();
+                document.getElementById('energia-value').textContent = '5';
+                
+                // Volver a la página principal
+                document.getElementById('reward-page').classList.add('hidden');
+                document.getElementById('main-page').classList.remove('hidden');
+                
+                // Limpiar mensajes
+                this.ocultarMensaje();
+            }
+            
+            mostrarLoading(mostrar) {
+                const loadingOverlay = document.getElementById('loading-overlay');
+                if (mostrar) {
+                    loadingOverlay.classList.remove('hidden');
+                } else {
+                    loadingOverlay.classList.add('hidden');
+                }
+            }
+            
+            mostrarMensaje(mensaje, tipo) {
+                const statusMessage = document.getElementById('status-message');
+                statusMessage.textContent = mensaje;
+                statusMessage.className = `mt-4 p-3 rounded-lg ${tipo === 'error' ? 'error-message' : 'success-message'}`;
+                statusMessage.classList.remove('hidden');
+                
+                // Ocultar mensaje después de 5 segundos
+                setTimeout(() => {
+                    this.ocultarMensaje();
+                }, 5000);
+            }
+            
+            ocultarMensaje() {
+                const statusMessage = document.getElementById('status-message');
+                statusMessage.classList.add('hidden');
+            }
         }
-    }
-    
-    procesarBitacora() {
-        const formData = this.recogerDatos();
-        this.enviarDatos(formData);
-        this.mostrarSorpresa();
-    }
-    
-    recogerDatos() {
-        return {
-            fecha: new Date().toISOString().split('T')[0],
-            horas_sueno: document.getElementById('horas-sueno').value,
-            nivel_energia: document.getElementById('nivel-energia').value,
-            cambios_animo: document.querySelector('input[name="cambios-animo"]:checked').value,
-            emocion_predominante: document.querySelector('input[name="emocion"]:checked').value,
-            evento_reflexion: document.getElementById('evento-reflexion').value,
-            timestamp: new Date().toISOString()
-        };
-    }
-    
-    async enviarDatos(datos) {
-        try {
-            await fetch(this.makeWebhook, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(datos)
-            });
-        } catch (error) {
-            console.log('Error enviando datos:', error);
-        }
-    }
-    
-    mostrarSorpresa() {
-        const fotoAleatoria = this.fotos[Math.floor(Math.random() * this.fotos.length)];
-        const mensajeAleatorio = this.mensajes[Math.floor(Math.random() * this.mensajes.length)];
-        
-        document.getElementById('formulario-container').style.display = 'none';
-        document.getElementById('sorpresa-container').style.display = 'block';
-        document.getElementById('mensaje-rotativo').textContent = mensajeAleatorio;
-        document.getElementById('foto-sorpresa').src = fotoAleatoria;
-    }
-}
 
-// Inicializar cuando cargue la página
-document.addEventListener('DOMContentLoaded', () => {
-    new BitacoraMaxito();
-});
-
+        // Inicializar cuando cargue la página
+        document.addEventListener('DOMContentLoaded', () => {
+            new BitacoraMaxito();
+        });
     </script>
-    </body>
+</body>
 </html>
