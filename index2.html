@@ -19,6 +19,10 @@
             --borde-sutil: rgba(255, 255, 255, 0.12);
             --sombra-principal: 0 20px 40px rgba(0, 0, 0, 0.3);
             --sombra-boton: 0 8px 24px rgba(233, 88, 77, 0.3);
+            --azul-ios: #007AFF;
+            --verde-ios: #34C759;
+            --amarillo-ios: #FFCC00;
+            --morado-ios: #AF52DE;
         }
         
         * {
@@ -51,28 +55,138 @@
             border-radius: 28px;
             box-shadow: var(--sombra-principal);
             margin: 16px;
-            padding: 32px 24px;
+            padding: 0;
             max-width: 420px;
             width: calc(100% - 32px);
+            overflow: hidden;
+        }
+        
+        /* Header iOS Style */
+        .header-ios {
+            background: linear-gradient(135deg, 
+                rgba(233, 88, 77, 0.15) 0%, 
+                rgba(233, 88, 77, 0.08) 50%, 
+                rgba(28, 28, 30, 0.95) 100%);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 24px 24px 32px 24px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header-ios::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 20%, rgba(233, 88, 77, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(233, 88, 77, 0.05) 0%, transparent 50%);
+            pointer-events: none;
+        }
+        
+        .header-content {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .header-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(233, 88, 77, 0.15);
+            border: 1px solid rgba(233, 88, 77, 0.3);
+            border-radius: 20px;
+            padding: 8px 16px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--rojo-suave);
+            margin-bottom: 16px;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+        
+        .header-badge i {
+            font-size: 16px;
+            animation: heartbeat 2s ease-in-out infinite;
+        }
+        
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
         }
         
         .header-title {
-            font-size: 32px;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-            margin-bottom: 8px;
-            background: linear-gradient(135deg, var(--blanco-suave) 0%, rgba(242, 242, 247, 0.8) 100%);
+            font-size: 36px;
+            font-weight: 800;
+            letter-spacing: -0.8px;
+            line-height: 1.1;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, 
+                var(--blanco-suave) 0%, 
+                rgba(242, 242, 247, 0.9) 40%,
+                rgba(233, 88, 77, 0.8) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
         
         .header-subtitle {
-            font-size: 17px;
-            font-weight: 400;
-            color: rgba(242, 242, 247, 0.6);
+            font-size: 18px;
+            font-weight: 500;
+            color: rgba(242, 242, 247, 0.7);
             line-height: 1.4;
-            margin-bottom: 32px;
+            margin-bottom: 20px;
+        }
+        
+        .header-stats {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        
+        .stat-pill {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 16px;
+            padding: 8px 14px;
+            font-size: 13px;
+            font-weight: 600;
+            color: rgba(242, 242, 247, 0.8);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .stat-pill i {
+            font-size: 12px;
+            opacity: 0.8;
+        }
+        
+        .stat-pill.time {
+            color: var(--azul-ios);
+            border-color: rgba(0, 122, 255, 0.3);
+        }
+        
+        .stat-pill.wellness {
+            color: var(--verde-ios);
+            border-color: rgba(52, 199, 89, 0.3);
+        }
+        
+        .stat-pill.private {
+            color: var(--morado-ios);
+            border-color: rgba(175, 82, 222, 0.3);
+        }
+        
+        /* Form Content */
+        .form-content {
+            padding: 32px 24px;
         }
         
         .form-group {
@@ -401,12 +515,23 @@
         @media (max-width: 375px) {
             .container-custom {
                 margin: 8px;
-                padding: 24px 16px;
                 border-radius: 20px;
             }
             
+            .header-ios {
+                padding: 20px 20px 28px 20px;
+            }
+            
             .header-title {
-                font-size: 28px;
+                font-size: 30px;
+            }
+            
+            .header-subtitle {
+                font-size: 16px;
+            }
+            
+            .form-content {
+                padding: 28px 20px;
             }
             
             .form-input {
@@ -422,6 +547,15 @@
             .radio-option {
                 padding: 16px;
                 min-height: 52px;
+            }
+            
+            .header-stats {
+                gap: 8px;
+            }
+            
+            .stat-pill {
+                padding: 6px 12px;
+                font-size: 12px;
             }
         }
         
@@ -448,149 +582,177 @@
         <div class="container-custom">
             <!-- Página Principal -->
             <div id="main-page" class="fade-in">
-                <div class="text-center mb-8">
-                    <h1 class="header-title">
-                        <i class="fas fa-heart icon" style="color: var(--rojo-suave);"></i>
-                        Bitácora Diaria
-                    </h1>
-                    <p class="header-subtitle">
-                        Maxito, tu bienestar es lo más importante. Te tomará sólo 1 minuto.
-                    </p>
+                <!-- Header iOS Premium -->
+                <div class="header-ios">
+                    <div class="header-content">
+                        <div class="header-badge">
+                            <i class="fas fa-heart"></i>
+                            Bienestar Personal
+                        </div>
+                        
+                        <h1 class="header-title">
+                            Bitácora Diaria
+                        </h1>
+                        
+                        <p class="header-subtitle">
+                            Maxito, tu bienestar es lo más importante. Te tomará sólo 1 minuto.
+                        </p>
+                        
+                        <div class="header-stats">
+                            <div class="stat-pill time">
+                                <i class="fas fa-clock"></i>
+                                1 min
+                            </div>
+                            <div class="stat-pill wellness">
+                                <i class="fas fa-shield-alt"></i>
+                                Privado
+                            </div>
+                            <div class="stat-pill private">
+                                <i class="fas fa-sparkles"></i>
+                                Sorpresa
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
-                <form id="bitacora-form">
-                    <!-- Horas de Sueño -->
-                    <div class="form-group">
-                        <label class="form-label">
-                            <i class="fas fa-moon icon"></i>
-                            ¿Cuántas horas dormiste anoche?
-                        </label>
-                        <input 
-                            type="number" 
-                            id="horas_sueno" 
-                            name="horas_sueno" 
-                            min="0" 
-                            max="24" 
-                            class="form-input"
-                            placeholder="Ej: 7"
-                            required
-                        >
-                    </div>
-
-                    <!-- Nivel de Energía -->
-                    <div class="form-group">
-                        <label class="form-label">
-                            <i class="fas fa-battery-half icon"></i>
-                            Nivel de Energía
-                        </label>
-                        <input 
-                            type="range" 
-                            id="nivel_energia" 
-                            name="nivel_energia" 
-                            min="1" 
-                            max="10" 
-                            value="5"
-                            class="energy-slider"
-                        >
-                        <div class="energy-display">
-                            <span>Muy bajo</span>
-                            <div class="energy-value" id="energia-value">5</div>
-                            <span>Muy alto</span>
+                <!-- Form Content -->
+                <div class="form-content">
+                    <form id="bitacora-form">
+                        <!-- Horas de Sueño -->
+                        <div class="form-group">
+                            <label class="form-label">
+                                <i class="fas fa-moon icon"></i>
+                                ¿Cuántas horas dormiste anoche?
+                            </label>
+                            <input 
+                                type="number" 
+                                id="horas_sueno" 
+                                name="horas_sueno" 
+                                min="0" 
+                                max="24" 
+                                class="form-input"
+                                placeholder="Ej: 7"
+                                required
+                            >
                         </div>
-                    </div>
 
-                    <!-- Cambios de Ánimo -->
-                    <div class="form-group">
-                        <label class="form-label">
-                            <i class="fas fa-chart-line icon"></i>
-                            Cambios de Ánimo
-                        </label>
-                        <div class="radio-group">
-                            <div class="radio-option" data-value="Muy estable">
-                                <input type="radio" name="cambios_animo" value="Muy estable" id="animo1">
-                                <label for="animo1">Muy estable</label>
-                            </div>
-                            <div class="radio-option" data-value="Cambios leves">
-                                <input type="radio" name="cambios_animo" value="Cambios leves" id="animo2">
-                                <label for="animo2">Cambios leves</label>
-                            </div>
-                            <div class="radio-option" data-value="Cambios moderados">
-                                <input type="radio" name="cambios_animo" value="Cambios moderados" id="animo3">
-                                <label for="animo3">Cambios moderados</label>
-                            </div>
-                            <div class="radio-option" data-value="Muy inestable">
-                                <input type="radio" name="cambios_animo" value="Muy inestable" id="animo4">
-                                <label for="animo4">Muy inestable</label>
+                        <!-- Nivel de Energía -->
+                        <div class="form-group">
+                            <label class="form-label">
+                                <i class="fas fa-battery-half icon"></i>
+                                Nivel de Energía
+                            </label>
+                            <input 
+                                type="range" 
+                                id="nivel_energia" 
+                                name="nivel_energia" 
+                                min="1" 
+                                max="10" 
+                                value="5"
+                                class="energy-slider"
+                            >
+                            <div class="energy-display">
+                                <span>Muy bajo</span>
+                                <div class="energy-value" id="energia-value">5</div>
+                                <span>Muy alto</span>
                             </div>
                         </div>
-                    </div>
 
-                    <!-- Emoción Predominante -->
-                    <div class="form-group">
-                        <label class="form-label">
-                            <i class="fas fa-smile icon"></i>
-                            Emoción Predominante
-                        </label>
-                        <div class="select-wrapper">
-                            <select id="emocion_predominante" name="emocion_predominante" class="form-input" required>
-                                <option value="">Selecciona una emoción</option>
-                                <option value="Tristeza">Tristeza</option>
-                                <option value="Desánimo/Bajones">Desánimo/Bajones</option>
-                                <option value="Irritabilidad">Irritabilidad</option>
-                                <option value="Euforia">Euforia</option>
-                                <option value="Ansiedad">Ansiedad</option>
-                                <option value="Vacío">Vacío</option>
-                                <option value="Estabilidad">Estabilidad</option>
-                            </select>
+                        <!-- Cambios de Ánimo -->
+                        <div class="form-group">
+                            <label class="form-label">
+                                <i class="fas fa-chart-line icon"></i>
+                                Cambios de Ánimo
+                            </label>
+                            <div class="radio-group">
+                                <div class="radio-option" data-value="Muy estable">
+                                    <input type="radio" name="cambios_animo" value="Muy estable" id="animo1">
+                                    <label for="animo1">Muy estable</label>
+                                </div>
+                                <div class="radio-option" data-value="Cambios leves">
+                                    <input type="radio" name="cambios_animo" value="Cambios leves" id="animo2">
+                                    <label for="animo2">Cambios leves</label>
+                                </div>
+                                <div class="radio-option" data-value="Cambios moderados">
+                                    <input type="radio" name="cambios_animo" value="Cambios moderados" id="animo3">
+                                    <label for="animo3">Cambios moderados</label>
+                                </div>
+                                <div class="radio-option" data-value="Muy inestable">
+                                    <input type="radio" name="cambios_animo" value="Muy inestable" id="animo4">
+                                    <label for="animo4">Muy inestable</label>
+                                </div>
+                            </div>
                         </div>
-                    </div>
 
-                    <!-- Reflexión -->
-                    <div class="form-group">
-                        <label class="form-label">
-                            <i class="fas fa-pen icon"></i>
-                            Evento Relevante / Reflexión
-                        </label>
-                        <textarea 
-                            id="evento_reflexion" 
-                            name="evento_reflexion" 
-                            rows="4" 
-                            class="form-input"
-                            placeholder="¿Pasó algo significativo hoy o cómo te sientes?"
-                            style="resize: none;"
-                        ></textarea>
-                    </div>
+                        <!-- Emoción Predominante - Ordenado de más bajo a más alto -->
+                        <div class="form-group">
+                            <label class="form-label">
+                                <i class="fas fa-smile icon"></i>
+                                Emoción Predominante
+                            </label>
+                            <div class="select-wrapper">
+                                <select id="emocion_predominante" name="emocion_predominante" class="form-input" required>
+                                    <option value="">Selecciona una emoción</option>
+                                    <option value="Vacío">Vacío</option>
+                                    <option value="Tristeza">Tristeza</option>
+                                    <option value="Desánimo/Bajones">Desánimo/Bajones</option>
+                                    <option value="Ansiedad">Ansiedad</option>
+                                    <option value="Irritabilidad">Irritabilidad</option>
+                                    <option value="Estabilidad">Estabilidad</option>
+                                    <option value="Euforia">Euforia</option>
+                                </select>
+                            </div>
+                        </div>
 
-                    <!-- Botón Enviar -->
-                    <button type="submit" class="btn-primary" id="submit-btn">
-                        <i class="fas fa-paper-plane"></i>
-                        Completar Bitácora
-                    </button>
-                </form>
+                        <!-- Reflexión -->
+                        <div class="form-group">
+                            <label class="form-label">
+                                <i class="fas fa-pen icon"></i>
+                                Evento Relevante / Reflexión
+                            </label>
+                            <textarea 
+                                id="evento_reflexion" 
+                                name="evento_reflexion" 
+                                rows="4" 
+                                class="form-input"
+                                placeholder="¿Pasó algo significativo hoy o cómo te sientes?"
+                                style="resize: none;"
+                            ></textarea>
+                        </div>
 
-                <!-- Mensaje de estado -->
-                <div id="status-message" class="status-message hidden"></div>
+                        <!-- Botón Enviar -->
+                        <button type="submit" class="btn-primary" id="submit-btn">
+                            <i class="fas fa-paper-plane"></i>
+                            Completar Bitácora
+                        </button>
+                    </form>
+
+                    <!-- Mensaje de estado -->
+                    <div id="status-message" class="status-message hidden"></div>
+                </div>
             </div>
 
             <!-- Página de Recompensa -->
             <div id="reward-page" class="fade-in hidden">
-                <div class="reward-message" id="reward-message">
-                    Mira qué pequeño eras...
+                <div class="form-content">
+                    <div class="reward-message" id="reward-message">
+                        Mira qué pequeño eras...
+                    </div>
+                    
+                    <div class="photo-container">
+                        <img id="reward-photo" src="" alt="Foto de recuerdo">
+                    </div>
+                    
+                    <div class="love-message">
+                        <i class="fas fa-heart"></i>
+                        Te amamos hijito ❤️
+                    </div>
+                    
+                    <button id="new-entry-btn" class="btn-secondary">
+                        <i class="fas fa-plus"></i>
+                        Nueva Bitácora
+                    </button>
                 </div>
-                
-                <div class="photo-container">
-                    <img id="reward-photo" src="" alt="Foto de recuerdo">
-                </div>
-                
-                <div class="love-message">
-                    <i class="fas fa-heart"></i>
-                    Te amamos hijito ❤️
-                </div>
-                
-                <button id="new-entry-btn" class="btn-secondary">
-                    <i class="fas fa-plus"></i>
-                    Nueva Bitácora
-                </button>
             </div>
         </div>
     </div>
@@ -703,37 +865,30 @@
             async procesarBitacora() {
                 console.log('Iniciando procesamiento de bitácora...');
                 
-                // Limpiar timeout anterior si existe
                 if (this.timeoutId) {
                     clearTimeout(this.timeoutId);
                 }
                 
                 try {
-                    // Validar formulario primero
                     if (!this.validarFormulario()) {
                         console.log('Formulario no válido');
                         return;
                     }
                     
-                    // Mostrar loading
                     this.mostrarLoading(true);
                     console.log('Loading mostrado');
                     
-                    // Recoger datos
                     const formData = this.recogerDatos();
                     console.log('Datos recolectados:', formData);
                     
-                    // Enviar datos en paralelo con timeout
                     const envioPromise = this.enviarDatos(formData);
                     
-                    // Garantizar que después de 3 segundos máximo se muestre la sorpresa
                     this.timeoutId = setTimeout(() => {
                         console.log('Timeout ejecutado, mostrando sorpresa...');
                         this.mostrarLoading(false);
                         this.mostrarSorpresa();
                     }, 3000);
                     
-                    // Intentar enviar datos pero no bloquear el flujo
                     try {
                         await Promise.race([
                             envioPromise,
@@ -744,12 +899,10 @@
                         console.log('Datos enviados correctamente');
                     } catch (error) {
                         console.log('Error o timeout en envío:', error.message);
-                        // No interrumpir el flujo, continuar con la sorpresa
                     }
                     
                 } catch (error) {
                     console.error('Error general procesando bitácora:', error);
-                    // Asegurar que siempre se muestre la sorpresa
                     this.timeoutId = setTimeout(() => {
                         this.mostrarLoading(false);
                         this.mostrarSorpresa();
@@ -817,7 +970,6 @@
             mostrarSorpresa() {
                 console.log('Mostrando sorpresa...');
                 
-                // Limpiar timeout si existe
                 if (this.timeoutId) {
                     clearTimeout(this.timeoutId);
                     this.timeoutId = null;
@@ -826,10 +978,8 @@
                 const fotoAleatoria = this.fotos[Math.floor(Math.random() * this.fotos.length)];
                 const mensajeAleatorio = this.mensajes[Math.floor(Math.random() * this.mensajes.length)];
                 
-                // Ocultar loading
                 this.mostrarLoading(false);
                 
-                // Cambiar páginas
                 document.getElementById('main-page').classList.add('hidden');
                 document.getElementById('reward-page').classList.remove('hidden');
                 document.getElementById('reward-message').textContent = mensajeAleatorio;
@@ -839,7 +989,6 @@
             }
             
             reiniciarFormulario() {
-                // Limpiar timeout si existe
                 if (this.timeoutId) {
                     clearTimeout(this.timeoutId);
                     this.timeoutId = null;
