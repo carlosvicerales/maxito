@@ -937,17 +937,33 @@
             recogerDatos() {
                 const cambiosAnimo = document.querySelector('input[name="cambios_animo"]:checked');
                 
+                // Crear fecha actual
+                const ahora = new Date();
+                
+                // Configurar para zona horaria de Chile
+                const fechaChile = new Date(ahora.toLocaleString("en-US", {timeZone: "America/Santiago"}));
+                const timestampChile = fechaChile.toISOString();
+                
+                // Formatear fecha (YYYY-MM-DD) en horario de Chile
+                const year = fechaChile.getFullYear();
+                const month = String(fechaChile.getMonth() + 1).padStart(2, '0');
+                const day = String(fechaChile.getDate()).padStart(2, '0');
+                const fechaChileStr = `${year}-${month}-${day}`;
+                
+                console.log('Fecha Chile:', fechaChileStr);
+                console.log('Timestamp Chile:', timestampChile);
+                
                 return {
-                    fecha: new Date().toISOString().split('T')[0],
+                    fecha: fechaChileStr,
                     horas_sueno: document.getElementById('horas_sueno').value,
                     nivel_energia: document.getElementById('nivel_energia').value,
                     cambios_animo: cambiosAnimo ? cambiosAnimo.value : '',
                     emocion_predominante: document.getElementById('emocion_predominante').value,
                     evento_reflexion: document.getElementById('evento_reflexion').value,
-                    timestamp: new Date().toISOString()
+                    timestamp: timestampChile
                 };
             }
-            
+
             async enviarDatos(datos) {
                 try {
                     const response = await fetch(this.makeWebhook, {
