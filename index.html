@@ -767,296 +767,328 @@
     </div>
 
     <script>
-        class BitacoraMaxito {
-            constructor() {
-                this.fotos = [
-                    'fotos/foto1.jpg', 'fotos/foto2.jpg', 'fotos/foto3.jpg',
-                    'fotos/foto4.jpg', 'fotos/foto5.jpg', 'fotos/foto6.jpg',
-                    'fotos/foto7.jpg', 'fotos/foto8.jpg', 'fotos/foto9.jpg',
-                    'fotos/foto10.jpg', 'fotos/foto11.jpg', 'fotos/foto12.jpg',
-                    'fotos/foto13.jpg', 'fotos/foto14.jpg', 'fotos/foto15.jpg'
-                ];
-                
-                this.mensajes = [
-                    "Mira qué pequeño eras...",
-                    "¿Te acuerdas de este momento?",
-                    "Qué hermoso recuerdo...",
-                    "Esta sonrisa sigue ahí...",
-                    "Momentos que no se olvidan...",
-                    "Siempre fuiste especial...",
-                    "Mira cuánto has crecido...",
-                    "¿Recuerdas esta aventura?"
-                ];
-                
-                this.makeWebhook = 'https://hook.us1.make.com/144onf1g776djfz608m6rl5pu7us4u37';
-                this.timeoutId = null;
-                this.init();
-            }
+    class BitacoraMaxito {
+        constructor() {
+            this.fotos = [
+                'fotos/foto1.jpg', 'fotos/foto2.jpg', 'fotos/foto3.jpg',
+                'fotos/foto4.jpg', 'fotos/foto5.jpg', 'fotos/foto6.jpg',
+                'fotos/foto7.jpg', 'fotos/foto8.jpg', 'fotos/foto9.jpg',
+                'fotos/foto10.jpg', 'fotos/foto11.jpg', 'fotos/foto12.jpg',
+                'fotos/foto13.jpg', 'fotos/foto14.jpg', 'fotos/foto15.jpg'
+            ];
             
-            init() {
-                this.setupFormSubmission();
-                this.setupEnergySlider();
-                this.setupRadioButtons();
-                this.setupNewEntryButton();
-                this.setupTouchFeedback();
-            }
+            this.mensajes = [
+                "Mira qué pequeño eras...",
+                "¿Te acuerdas de este momento?",
+                "Qué hermoso recuerdo...",
+                "Esta sonrisa sigue ahí...",
+                "Momentos que no se olvidan...",
+                "Siempre fuiste especial...",
+                "Mira cuánto has crecido...",
+                "¿Recuerdas esta aventura?"
+            ];
             
-            setupFormSubmission() {
-                const form = document.getElementById('bitacora-form');
-                if (form) {
-                    form.addEventListener('submit', (e) => {
-                        e.preventDefault();
-                        this.procesarBitacora();
-                    });
-                }
-            }
-            
-            setupEnergySlider() {
-                const slider = document.getElementById('nivel_energia');
-                const valueDisplay = document.getElementById('energia-value');
-                
-                if (slider && valueDisplay) {
-                    slider.addEventListener('input', (e) => {
-                        valueDisplay.textContent = e.target.value;
-                    });
-                }
-            }
-            
-            setupRadioButtons() {
-                const radioOptions = document.querySelectorAll('.radio-option');
-                
-                radioOptions.forEach(option => {
-                    option.addEventListener('click', () => {
-                        radioOptions.forEach(opt => opt.classList.remove('selected'));
-                        option.classList.add('selected');
-                        
-                        const radio = option.querySelector('input[type="radio"]');
-                        if (radio) {
-                            radio.checked = true;
-                        }
-                    });
+            this.makeWebhook = 'https://hook.us1.make.com/144onf1g776djfz608m6rl5pu7us4u37';
+            this.timeoutId = null;
+            this.init();
+        }
+        
+        init() {
+            this.setupFormSubmission();
+            this.setupEnergySlider();
+            this.setupRadioButtons();
+            this.setupNewEntryButton();
+            this.setupTouchFeedback();
+        }
+        
+        setupFormSubmission() {
+            const form = document.getElementById('bitacora-form');
+            if (form) {
+                form.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    this.procesarBitacora();
                 });
-            }
-            
-            setupNewEntryButton() {
-                const newEntryBtn = document.getElementById('new-entry-btn');
-                if (newEntryBtn) {
-                    newEntryBtn.addEventListener('click', () => {
-                        this.reiniciarFormulario();
-                    });
-                }
-            }
-            
-            setupTouchFeedback() {
-                const buttons = document.querySelectorAll('.btn-primary, .btn-secondary, .radio-option');
-                
-                buttons.forEach(button => {
-                    button.addEventListener('touchstart', () => {
-                        button.style.transform = 'scale(0.98)';
-                    });
-                    
-                    button.addEventListener('touchend', () => {
-                        setTimeout(() => {
-                            button.style.transform = '';
-                        }, 100);
-                    });
-                });
-            }
-            
-            async procesarBitacora() {
-                console.log('Iniciando procesamiento de bitácora...');
-                
-                if (this.timeoutId) {
-                    clearTimeout(this.timeoutId);
-                }
-                
-                try {
-                    if (!this.validarFormulario()) {
-                        console.log('Formulario no válido');
-                        return;
-                    }
-                    
-                    this.mostrarLoading(true);
-                    console.log('Loading mostrado');
-                    
-                    const formData = this.recogerDatos();
-                    console.log('Datos recolectados:', formData);
-                    
-                    const envioPromise = this.enviarDatos(formData);
-                    
-                    this.timeoutId = setTimeout(() => {
-                        console.log('Timeout ejecutado, mostrando sorpresa...');
-                        this.mostrarLoading(false);
-                        this.mostrarSorpresa();
-                    }, 3000);
-                    
-                    try {
-                        await Promise.race([
-                            envioPromise,
-                            new Promise((_, reject) => 
-                                setTimeout(() => reject(new Error('Timeout')), 2500)
-                            )
-                        ]);
-                        console.log('Datos enviados correctamente');
-                    } catch (error) {
-                        console.log('Error o timeout en envío:', error.message);
-                    }
-                    
-                } catch (error) {
-                    console.error('Error general procesando bitácora:', error);
-                    this.timeoutId = setTimeout(() => {
-                        this.mostrarLoading(false);
-                        this.mostrarSorpresa();
-                    }, 1000);
-                }
-            }
-            
-            validarFormulario() {
-                const horasSueno = document.getElementById('horas_sueno').value;
-                const cambiosAnimo = document.querySelector('input[name="cambios_animo"]:checked');
-                const emocionPredominante = document.getElementById('emocion_predominante').value;
-                
-                if (!horasSueno) {
-                    this.mostrarMensaje('Por favor, ingresa las horas de sueño.', 'error');
-                    return false;
-                }
-                
-                if (!cambiosAnimo) {
-                    this.mostrarMensaje('Por favor, selecciona los cambios de ánimo.', 'error');
-                    return false;
-                }
-                
-                if (!emocionPredominante) {
-                    this.mostrarMensaje('Por favor, selecciona la emoción predominante.', 'error');
-                    return false;
-                }
-                
-                return true;
-            }
-            
-            recogerDatos() {
-                const cambiosAnimo = document.querySelector('input[name="cambios_animo"]:checked');
-                
-                // Crear fecha actual
-                const ahora = new Date();
-                
-                // Configurar para zona horaria de Chile
-                const fechaChile = new Date(ahora.toLocaleString("en-US", {timeZone: "America/Santiago"}));
-                const timestampChile = fechaChile.toISOString();
-                
-                // Formatear fecha (YYYY-MM-DD) en horario de Chile
-                const year = fechaChile.getFullYear();
-                const month = String(fechaChile.getMonth() + 1).padStart(2, '0');
-                const day = String(fechaChile.getDate()).padStart(2, '0');
-                const fechaChileStr = `${year}-${month}-${day}`;
-                
-                console.log('Fecha Chile:', fechaChileStr);
-                console.log('Timestamp Chile:', timestampChile);
-                
-                return {
-                    fecha: fechaChileStr,
-                    horas_sueno: document.getElementById('horas_sueno').value,
-                    nivel_energia: document.getElementById('nivel_energia').value,
-                    cambios_animo: cambiosAnimo ? cambiosAnimo.value : '',
-                    emocion_predominante: document.getElementById('emocion_predominante').value,
-                    evento_reflexion: document.getElementById('evento_reflexion').value,
-                    timestamp: timestampChile
-                };
-            }
-
-            async enviarDatos(datos) {
-                try {
-                    const response = await fetch(this.makeWebhook, {
-                        method: 'POST',
-                        headers: { 
-                            'Content-Type': 'application/json',
-                            'Accept': 'application/json'
-                        },
-                        body: JSON.stringify(datos),
-                        mode: 'cors'
-                    });
-                    
-                    console.log('Respuesta del webhook:', response.status);
-                    return response;
-                } catch (error) {
-                    console.log('Error enviando datos:', error);
-                    throw error;
-                }
-            }
-            
-            mostrarSorpresa() {
-                console.log('Mostrando sorpresa...');
-                
-                if (this.timeoutId) {
-                    clearTimeout(this.timeoutId);
-                    this.timeoutId = null;
-                }
-                
-                const fotoAleatoria = this.fotos[Math.floor(Math.random() * this.fotos.length)];
-                const mensajeAleatorio = this.mensajes[Math.floor(Math.random() * this.mensajes.length)];
-                
-                this.mostrarLoading(false);
-                
-                document.getElementById('main-page').classList.add('hidden');
-                document.getElementById('reward-page').classList.remove('hidden');
-                document.getElementById('reward-message').textContent = mensajeAleatorio;
-                document.getElementById('reward-photo').src = fotoAleatoria;
-                
-                console.log('Sorpresa mostrada correctamente');
-            }
-            
-            reiniciarFormulario() {
-                if (this.timeoutId) {
-                    clearTimeout(this.timeoutId);
-                    this.timeoutId = null;
-                }
-                
-                document.getElementById('bitacora-form').reset();
-                document.getElementById('energia-value').textContent = '5';
-                
-                document.querySelectorAll('.radio-option').forEach(opt => {
-                    opt.classList.remove('selected');
-                });
-                
-                document.getElementById('reward-page').classList.add('hidden');
-                document.getElementById('main-page').classList.remove('hidden');
-                
-                this.ocultarMensaje();
-                this.mostrarLoading(false);
-            }
-            
-            mostrarLoading(mostrar) {
-                const loadingOverlay = document.getElementById('loading-overlay');
-                if (mostrar) {
-                    loadingOverlay.classList.remove('hidden');
-                    console.log('Loading overlay mostrado');
-                } else {
-                    loadingOverlay.classList.add('hidden');
-                    console.log('Loading overlay ocultado');
-                }
-            }
-            
-            mostrarMensaje(mensaje, tipo) {
-                const statusMessage = document.getElementById('status-message');
-                statusMessage.textContent = mensaje;
-                statusMessage.className = `status-message ${tipo}`;
-                statusMessage.classList.remove('hidden');
-                
-                setTimeout(() => {
-                    this.ocultarMensaje();
-                }, 5000);
-            }
-            
-            ocultarMensaje() {
-                const statusMessage = document.getElementById('status-message');
-                statusMessage.classList.add('hidden');
             }
         }
+        
+        setupEnergySlider() {
+            const slider = document.getElementById('nivel_energia');
+            const valueDisplay = document.getElementById('energia-value');
+            
+            if (slider && valueDisplay) {
+                slider.addEventListener('input', (e) => {
+                    valueDisplay.textContent = e.target.value;
+                });
+            }
+        }
+        
+        setupRadioButtons() {
+            const radioOptions = document.querySelectorAll('.radio-option');
+            
+            radioOptions.forEach(option => {
+                option.addEventListener('click', () => {
+                    radioOptions.forEach(opt => opt.classList.remove('selected'));
+                    option.classList.add('selected');
+                    
+                    const radio = option.querySelector('input[type="radio"]');
+                    if (radio) {
+                        radio.checked = true;
+                    }
+                });
+            });
+        }
+        
+        setupNewEntryButton() {
+            const newEntryBtn = document.getElementById('new-entry-btn');
+            if (newEntryBtn) {
+                newEntryBtn.addEventListener('click', () => {
+                    this.reiniciarFormulario();
+                });
+            }
+        }
+        
+        setupTouchFeedback() {
+            const buttons = document.querySelectorAll('.btn-primary, .btn-secondary, .radio-option');
+            
+            buttons.forEach(button => {
+                button.addEventListener('touchstart', () => {
+                    button.style.transform = 'scale(0.98)';
+                });
+                
+                button.addEventListener('touchend', () => {
+                    setTimeout(() => {
+                        button.style.transform = '';
+                    }, 100);
+                });
+            });
+        }
+        
+        async procesarBitacora() {
+            console.log('Iniciando procesamiento de bitácora...');
+            
+            if (this.timeoutId) {
+                clearTimeout(this.timeoutId);
+            }
+            
+            try {
+                if (!this.validarFormulario()) {
+                    console.log('Formulario no válido');
+                    return;
+                }
+                
+                this.mostrarLoading(true);
+                console.log('Loading mostrado');
+                
+                const formData = this.recogerDatos();
+                console.log('Datos recolectados:', formData);
+                
+                const envioPromise = this.enviarDatos(formData);
+                
+                this.timeoutId = setTimeout(() => {
+                    console.log('Timeout ejecutado, mostrando sorpresa...');
+                    this.mostrarLoading(false);
+                    this.mostrarSorpresa();
+                }, 3000);
+                
+                try {
+                    await Promise.race([
+                        envioPromise,
+                        new Promise((_, reject) => 
+                            setTimeout(() => reject(new Error('Timeout')), 2500)
+                        )
+                    ]);
+                    console.log('Datos enviados correctamente');
+                } catch (error) {
+                    console.log('Error o timeout en envío:', error.message);
+                }
+                
+            } catch (error) {
+                console.error('Error general procesando bitácora:', error);
+                this.timeoutId = setTimeout(() => {
+                    this.mostrarLoading(false);
+                    this.mostrarSorpresa();
+                }, 1000);
+            }
+        }
+        
+        validarFormulario() {
+            const horasSueno = document.getElementById('horas_sueno').value;
+            const cambiosAnimo = document.querySelector('input[name="cambios_animo"]:checked');
+            const emocionPredominante = document.getElementById('emocion_predominante').value;
+            
+            if (!horasSueno) {
+                this.mostrarMensaje('Por favor, ingresa las horas de sueño.', 'error');
+                return false;
+            }
+            
+            if (!cambiosAnimo) {
+                this.mostrarMensaje('Por favor, selecciona los cambios de ánimo.', 'error');
+                return false;
+            }
+            
+            if (!emocionPredominante) {
+                this.mostrarMensaje('Por favor, selecciona la emoción predominante.', 'error');
+                return false;
+            }
+            
+            return true;
+        }
+        
+        recogerDatos() {
+            const cambiosAnimo = document.querySelector('input[name="cambios_animo"]:checked');
+            
+            // Crear fecha actual
+            const ahora = new Date();
+            
+            // Configurar para zona horaria de Chile
+            const fechaChile = new Date(ahora.toLocaleString("en-US", {timeZone: "America/Santiago"}));
+            const timestampChile = fechaChile.toISOString();
+            
+            // Formatear fecha (YYYY-MM-DD) en horario de Chile
+            const year = fechaChile.getFullYear();
+            const month = String(fechaChile.getMonth() + 1).padStart(2, '0');
+            const day = String(fechaChile.getDate()).padStart(2, '0');
+            const fechaChileStr = `${year}-${month}-${day}`;
+            
+            console.log('Fecha Chile:', fechaChileStr);
+            console.log('Timestamp Chile:', timestampChile);
+            
+            return {
+                fecha: fechaChileStr,
+                horas_sueno: document.getElementById('horas_sueno').value,
+                nivel_energia: document.getElementById('nivel_energia').value,
+                cambios_animo: cambiosAnimo ? cambiosAnimo.value : '',
+                emocion_predominante: document.getElementById('emocion_predominante').value,
+                evento_reflexion: document.getElementById('evento_reflexion').value,
+                timestamp: timestampChile
+            };
+        }
+    
+        async enviarDatos(datos) {
+            try {
+                const response = await fetch(this.makeWebhook, {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(datos),
+                    mode: 'cors'
+                });
+                
+                console.log('Respuesta del webhook:', response.status);
+                return response;
+            } catch (error) {
+                console.log('Error enviando datos:', error);
+                throw error;
+            }
+        }
+        
+        // Método mejorado para obtener foto del día
+        obtenerFotoDelDia() {
+            const ahora = new Date();
+            const fechaChile = new Date(ahora.toLocaleString("en-US", {timeZone: "America/Santiago"}));
+            
+            // Calcular días desde una fecha base (1 de enero de 2025)
+            const fechaBase = new Date(2025, 0, 1);
+            const diasDesdeBase = Math.floor((fechaChile - fechaBase) / (1000 * 60 * 60 * 24));
+            
+            // Usar una fórmula que distribuya mejor las fotos
+            const indice = (diasDesdeBase * 7 + 3) % this.fotos.length;
+            
+            console.log('Fecha Chile:', fechaChile.toDateString());
+            console.log('Días desde base (1 ene 2025):', diasDesdeBase);
+            console.log('Índice calculado:', indice);
+            console.log('Foto seleccionada:', this.fotos[indice]);
+            
+            return this.fotos[indice];
+        }
+        
+        mostrarSorpresa() {
+            console.log('=== INICIANDO SORPRESA ===');
+            console.log('Fotos disponibles:', this.fotos.length);
+            console.log('Mensajes disponibles:', this.mensajes.length);
+            
+            if (this.timeoutId) {
+                clearTimeout(this.timeoutId);
+                this.timeoutId = null;
+            }
+            
+            // Usar foto del día en lugar de aleatoria
+            const fotoDelDia = this.obtenerFotoDelDia();
+            const mensajeAleatorio = this.mensajes[Math.floor(Math.random() * this.mensajes.length)];
+            
+            this.mostrarLoading(false);
+            
+            document.getElementById('main-page').classList.add('hidden');
+            document.getElementById('reward-page').classList.remove('hidden');
+            document.getElementById('reward-message').textContent = mensajeAleatorio;
+            
+            // Agregar manejo de errores para la imagen
+            const imgElement = document.getElementById('reward-photo');
+            imgElement.onerror = () => {
+                console.log('Error cargando imagen:', fotoDelDia);
+                // Intentar con la primera foto como fallback
+                imgElement.src = this.fotos[0];
+            };
+            imgElement.src = fotoDelDia;
+            
+            console.log('Sorpresa mostrada correctamente');
+        }
+        
+        reiniciarFormulario() {
+            if (this.timeoutId) {
+                clearTimeout(this.timeoutId);
+                this.timeoutId = null;
+            }
+            
+            document.getElementById('bitacora-form').reset();
+            document.getElementById('energia-value').textContent = '5';
+            
+            document.querySelectorAll('.radio-option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            
+            document.getElementById('reward-page').classList.add('hidden');
+            document.getElementById('main-page').classList.remove('hidden');
+            
+            this.ocultarMensaje();
+            this.mostrarLoading(false);
+        }
+        
+        mostrarLoading(mostrar) {
+            const loadingOverlay = document.getElementById('loading-overlay');
+            if (mostrar) {
+                loadingOverlay.classList.remove('hidden');
+                console.log('Loading overlay mostrado');
+            } else {
+                loadingOverlay.classList.add('hidden');
+                console.log('Loading overlay ocultado');
+            }
+        }
+        
+        mostrarMensaje(mensaje, tipo) {
+            const statusMessage = document.getElementById('status-message');
+            statusMessage.textContent = mensaje;
+            statusMessage.className = `status-message ${tipo}`;
+            statusMessage.classList.remove('hidden');
+            
+            setTimeout(() => {
+                this.ocultarMensaje();
+            }, 5000);
+        }
+        
+        ocultarMensaje() {
+            const statusMessage = document.getElementById('status-message');
+            statusMessage.classList.add('hidden');
+        }
+    }
+    
+    document.addEventListener('DOMContentLoaded', () => {
+        console.log('DOM cargado, inicializando BitacoraMaxito...');
+        new BitacoraMaxito();
+    });
 
-        document.addEventListener('DOMContentLoaded', () => {
-            console.log('DOM cargado, inicializando BitacoraMaxito...');
-            new BitacoraMaxito();
-        });
     </script>
 </body>
 </html>
